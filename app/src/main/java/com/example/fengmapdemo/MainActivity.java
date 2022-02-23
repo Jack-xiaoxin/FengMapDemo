@@ -1,13 +1,17 @@
 package com.example.fengmapdemo;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.fengmapdemo.utils.FMLocationAPI;
 import com.fengmap.android.FMDevice;
@@ -81,6 +85,32 @@ public class MainActivity extends AppCompatActivity implements OnFMMapInitListen
         FMMapSDK.init(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //初始化ToolBar控件
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        //配置actionBar
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        }
+
+        //点击定位Button
+        btnMyLocation = (FloatingActionButton) findViewById(R.id.btn_my_location);
+        btnMyLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO 定位
+                textViewBottomMessage.setText("正在定位");
+            }
+        });
+
+        textViewBottomMessage = (TextView) findViewById(R.id.txt_bottom_message);
+        String message = "等待定位";
+        textViewBottomMessage.setText(message);
+
         openMapById();
 
     }
@@ -93,6 +123,11 @@ public class MainActivity extends AppCompatActivity implements OnFMMapInitListen
         }
         super.onBackPressed();
         this.finish();
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar, menu);
+        return true;
     }
 
     private void openMapById() {
