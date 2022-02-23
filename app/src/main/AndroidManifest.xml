@@ -26,7 +26,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <meta-data android:name="com.fengmap.mapapi.appkey" android:value="28be37c33fa27075f3e3714a80c7c0c9"/>
+        <meta-data android:name="com.fengmap.mapapi.appkey" android:value="9590437a1b18be7b935e8ad9ec6037e2"/>
     </application>
 
 </manifest>
