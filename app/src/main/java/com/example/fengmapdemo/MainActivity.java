@@ -4,11 +4,14 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.fengmapdemo.location.Location;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -27,6 +30,7 @@ import com.fengmap.android.FMErrorMsg;
 import com.fengmap.android.FMMapSDK;
 import com.fengmap.android.analysis.navi.FMNaviAnalyser;
 import com.fengmap.android.analysis.navi.FMNaviResult;
+import com.fengmap.android.analysis.search.FMSearchAnalyser;
 import com.fengmap.android.exception.FMObjectException;
 import com.fengmap.android.map.FMMap;
 import com.fengmap.android.map.FMMapUpgradeInfo;
@@ -71,8 +75,8 @@ public class MainActivity extends AppCompatActivity implements OnFMMapInitListen
                                 FMLocationAPI.OnFMLocationListener{
 
     static FMMap mFMMap;
-    String bid = "1495596552216612865";
-    String mapName = "复旦大学江湾校区 A 教学楼";
+    static String bid = "1495596552216612865";
+    String mapName = "复旦大学江湾校区A教学楼";
     private FMMapView mapView;
     //定位按钮
     FloatingActionButton btnMyLocation;
@@ -196,6 +200,11 @@ public class MainActivity extends AppCompatActivity implements OnFMMapInitListen
      * 剩余距离
      */
     private volatile double mLeftDistance;
+    /**
+     * 搜索分析对象
+     */
+    protected static FMSearchAnalyser mSearchAnalyser;
+
 
 
     @Override
@@ -223,6 +232,16 @@ public class MainActivity extends AppCompatActivity implements OnFMMapInitListen
             public void onClick(View v) {
                 //TODO 定位
                 textViewBottomMessage.setText("正在定位");
+                Location.mapCoord.setGroupId(1);
+                double x = 13526766.612724546;
+                double y = 3654815.7768581766;
+                Location.mapCoord.setMapCoord(new FMMapCoord(Double.valueOf(x), Double.valueOf(y)));
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                textViewBottomMessage.setText("定位成功");
             }
         });
 
@@ -318,9 +337,8 @@ public class MainActivity extends AppCompatActivity implements OnFMMapInitListen
         mLocationAPI.setFMLocationListener(this);
 
         //路径规划
-        //analyzeNavigation(stCoord, endCoord);
-//        analyzeNavigation();
-//        mTotalDistance = mNaviAnalyser.getSceneRouteLength();
+        analyzeNavigation();
+        mTotalDistance = mNaviAnalyser.getSceneRouteLength();
 
     }
 
@@ -1086,7 +1104,7 @@ public class MainActivity extends AppCompatActivity implements OnFMMapInitListen
         }
         //添加LineMarker
         FMLineMarker lineMarker = new FMLineMarker(segments);
-        lineMarker.setLineWidth(3f);
+        lineMarker.setLineWidth(1.5f);
         mLineLayer.addMarker(lineMarker);
     }
 
@@ -1271,5 +1289,32 @@ public class MainActivity extends AppCompatActivity implements OnFMMapInitListen
             e.printStackTrace();
         }
         handler.sendEmptyMessage(1);//睡醒来了，传送消息，扫描完成
+    }
+
+    /**
+     * 菜单点击监听
+     *
+     * @param item
+     * @return
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+//                Intent intentHome = new Intent(MainActivity.this, MySettingActivity.class);
+//                startActivity(intentHome);
+                break;
+            case R.id.search:
+                Toast.makeText(MainActivity.this, "Search", Toast.LENGTH_SHORT).show();
+                Intent intentSearch=new Intent(MainActivity.this,SearchActivity.class);
+                startActivity(intentSearch);
+                break;
+            case R.id.voice:
+                Toast.makeText(MainActivity.this, "Voice", Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                break;
+        }
+        return true;
     }
 }
