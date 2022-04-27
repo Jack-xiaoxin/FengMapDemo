@@ -3,7 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndroidProject/FengMapDemo/app/src/main/res/layout/activity_camera.xml" value="0.3729166666666667" />
         <entry key="..\:/AndroidProject/FengMapDemo/app/src/main/res/layout/activity_main.xml" value="0.31875" />
+        <entry key="..\:/AndroidProject/FengMapDemo/app/src/main/res/layout/activity_main2.xml" value="0.3729166666666667" />
         <entry key="..\:/AndroidProject/FengMapDemo/app/src/main/res/layout/activity_search.xml" value="0.32760416666666664" />
         <entry key="..\:/AndroidProject/FengMapDemo/app/src/main/res/layout/snackbar.xml" value="0.29322916666666665" />
         <entry key="..\:/AndroidProject/FengMapDemo/app/src/main/res/menu/toolbar.xml" value="0.33541666666666664" />

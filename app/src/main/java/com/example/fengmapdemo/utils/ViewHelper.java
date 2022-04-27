@@ -113,7 +113,7 @@ public class ViewHelper {
         imageMarker.setMarkerWidth(90);
         imageMarker.setMarkerHeight(90);
         //设置图片在模型之上
-        imageMarker.setFMImageMarkerOffsetMode(FMImageMarker.FMImageMarkerOffsetMode.FMNODE_MODEL_ABOVE);
+        imageMarker.setFMImageMarkerOffsetMode(FMImageMarker.FMImageMarkerOffsetMode.FMNODE_CUSTOM_HEIGHT);
         return imageMarker;
     }
 

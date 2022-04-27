@@ -1,5 +1,6 @@
 package com.example.fengmapdemo;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -47,7 +48,6 @@ import com.fengmap.android.map.event.OnFMSwitchGroupListener;
 import com.fengmap.android.map.geometry.FMMapCoord;
 import com.fengmap.android.map.layer.FMFacilityLayer;
 import com.fengmap.android.map.layer.FMImageLayer;
-import com.fengmap.android.map.layer.FMLayerProxy;
 import com.fengmap.android.map.layer.FMLineLayer;
 import com.fengmap.android.map.layer.FMLocationLayer;
 import com.fengmap.android.map.layer.FMModelLayer;
@@ -65,6 +65,7 @@ import com.fengmap.android.widget.FMSwitchFloorComponent;
 import com.fengmap.android.widget.FMZoomComponent;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
 
 import java.io.FileNotFoundException;
 import java.lang.reflect.Method;
@@ -232,16 +233,8 @@ public class MainActivity extends AppCompatActivity implements OnFMMapInitListen
             public void onClick(View v) {
                 //TODO 定位
                 textViewBottomMessage.setText("正在定位");
-                Location.mapCoord.setGroupId(1);
-                double x = 13526766.612724546;
-                double y = 3654815.7768581766;
-                Location.mapCoord.setMapCoord(new FMMapCoord(Double.valueOf(x), Double.valueOf(y)));
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                textViewBottomMessage.setText("定位成功");
+                Intent intent = new Intent(MainActivity.this, CameraActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -300,6 +293,7 @@ public class MainActivity extends AppCompatActivity implements OnFMMapInitListen
         }
 
         int groupId = mFMMap.getFocusGroupId();
+        Log.d("groupId", ": "+groupId);
 
         //公共设施图层
         mFacilityLayer = mFMMap.getFMLayerProxy().getFMFacilityLayer(groupId);
@@ -340,6 +334,8 @@ public class MainActivity extends AppCompatActivity implements OnFMMapInitListen
         analyzeNavigation();
         mTotalDistance = mNaviAnalyser.getSceneRouteLength();
 
+        Log.d("MapInit", "success");
+        Log.d("MapInit", ""+(mImageLayer == null));
     }
 
     @Override
@@ -802,7 +798,7 @@ public class MainActivity extends AppCompatActivity implements OnFMMapInitListen
         if (Location.mapCoord.getGroupId() != 0 && Location.mapCoord.getMapCoord().x != 0 &&
                 Location.mapCoord.getMapCoord().y != 0) {
 
-            Log.d(TAG, "locationMarker: " + Location.mapCoord.getGroupId());
+            Log.d(TAG, "locationMarker: " + Location.mapCoord.getGroupId() + " " + Location.mapCoord.getMapCoord().x);
             //清空现有
             clear();
             //切换地图
@@ -1316,5 +1312,25 @@ public class MainActivity extends AppCompatActivity implements OnFMMapInitListen
                 break;
         }
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MapCoord mapCoord = (MapCoord)getIntent().getSerializableExtra("mapcoord");
+        Log.d("mapcoord", ""+(mapCoord==null));
+        if(mapCoord != null) {
+            Location.mapCoord.setGroupId(mapCoord.getGroupId());
+            Location.mapCoord.setMapCoord(mapCoord.getMapCoord());
+            locationMarker();
+            createStartImageMarker();
+            textViewBottomMessage.setText("定位成功");
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);//设置Intent
     }
 }

@@ -1,7 +1,6 @@
 package com.example.fengmapdemo;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,17 +13,13 @@ import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.example.fengmapdemo.location.Destination;
 import com.example.fengmapdemo.utils.AnalysisUtils;
 import com.fengmap.android.analysis.search.FMSearchAnalyser;
 import com.fengmap.android.exception.FMObjectException;
-import com.fengmap.android.map.event.OnFMMapClickListener;
 import com.fengmap.android.map.marker.FMModel;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import static com.example.fengmapdemo.MainActivity.mFMMap;
 import static com.example.fengmapdemo.MainActivity.mSearchAnalyser;
